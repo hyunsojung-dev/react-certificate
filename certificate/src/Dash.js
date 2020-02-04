@@ -38,9 +38,11 @@ import AnnouncementRoundedIcon from '@material-ui/icons/AnnouncementRounded';
 import CreateRoundedIcon from '@material-ui/icons/CreateRounded';
 import ImportContactsRoundedIcon from '@material-ui/icons/ImportContactsRounded';
 
-
-import green from '@material-ui/core/colors/green';
-const green_primary = green[800]; // #F44336
+// 대쉬보드 메인 색 변경
+// import green from '@material-ui/core/colors/green';
+// const green_primary = green[800];
+import brown from '@material-ui/core/colors/brown';
+const brown_primary = brown[500];
 
 
 function Copyright() {
@@ -56,7 +58,7 @@ function Copyright() {
   );
 }
 
-const drawerWidth = 300;
+const drawerWidth = 240;
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -73,7 +75,7 @@ const useStyles = makeStyles(theme => ({
     ...theme.mixins.toolbar,
   },
   appBar: {
-    background: green_primary,
+    background: brown_primary,
     zIndex: theme.zIndex.drawer + 1,
     transition: theme.transitions.create(['width', 'margin'], {
       easing: theme.transitions.easing.sharp,
@@ -197,7 +199,7 @@ export default function Dashboard() {
         </div>
         <Divider />
         {/* <List>{mainListItems}</List> */}
-                  <div>
+          <div>
               <Link to="/" >
               <ListItem button>
                 <ListItemIcon>
@@ -222,7 +224,7 @@ export default function Dashboard() {
                 <ListItemText primary="년도별 리스트" />
               </ListItem>
               </Link> 
-              </div>
+          </div>
         <Divider />
         <List>{secondaryListItems}</List>
       </Drawer>

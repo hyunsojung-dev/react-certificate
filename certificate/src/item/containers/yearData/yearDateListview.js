@@ -85,7 +85,8 @@ export default class problemList extends Component {
 
     render() {
         return (
-          <div style={{ marginLeft: 15,  marginRight: 15, marginTop: 5}}> 
+          // <div style={{margin: 5}}> 
+          <div > 
             <div className={useStyles.root}>
               <Paper className={useStyles.paper}>
                 <Table className={useStyles.table} size="small" aria-label="a dense table">

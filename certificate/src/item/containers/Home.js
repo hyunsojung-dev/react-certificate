@@ -102,7 +102,7 @@ class Home extends Component {
   render() {
     return (       
         <div  style={{marginTop: 30 }}>
-          <div style={{margin: 10, textAlign: "center", width: "70%", margin: "auto" }}>  
+          <div style={{textAlign: "center", width: "70%", margin: "auto" }}>  
             { this.onView_ProblemInfo()[this.state.random] }  
             <div className="button-style">
             <button style={btnStyle} onClick={this.onChangeClick.bind(this) } >NEXT</button>

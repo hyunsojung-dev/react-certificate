@@ -1,10 +1,11 @@
 ﻿﻿var express = require("express");
 const mongoose = require('mongoose');
+const config = require('../config');
 // DB setting
 mongoose.set('useNewUrlParser', true);    
 mongoose.set('useFindAndModify', false);  
 mongoose.set('useCreateIndex', true);     
-mongoose.connect(process.env.MongoDB); 
+mongoose.connect(config.db.uri); 
 const db = mongoose.connection;
 
 var LoginRoute = express.Router();

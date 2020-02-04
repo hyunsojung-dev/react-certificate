@@ -19,17 +19,20 @@ const Todo = props => (
     
     <tr>
     <td>{props.index}</td>
-    <td>{props.todo.todo_description}</td>
+    {/* 문 제 */}
+    <td>{props.todo.todo_description}</td> 
+    {/* 정 답 */}
     <td>{props.todo.todo_responsible}</td>
-    <td>{props.todo.todo_priority}</td>
+    {/* 어려운 정도 */}
+    {/* <td>{props.todo.todo_priority}</td> */}
     <td><Moment format="YYYY/MM/DD">{props.todo.todo_createdAt}</Moment></td>
     <td>
         {/* <Link to={"/Problem/edit/"+props.todo._id} className="btn btn-primary" >Edit</Link> */}
-        <Link to={"/Problem/edit/"+props.todo._id} >Edit</Link>
+        <Link to={"/Problem/edit/"+props.todo._id} >수정</Link>
     </td>
     <td> 
         <form method='POST' action={`/Problem/delete/${props.todo._id}` } >
-            <button style={btnStyle} ><img src={trashImage} height='20px' width='20px'/></button>
+            <button style={btnStyle} ><img src={trashImage} height='15px' width='15px'/></button>
          </form>
     </td>
 </tr>
@@ -44,7 +47,6 @@ export default class TodosList extends Component {
         //this.onDeletebutton = this.onDeletebutton.bind(this);
     }
     
-
     componentDidMount() {
         axios.get('http://localhost:7376/Problem/')
             .then(response => {
@@ -53,7 +55,6 @@ export default class TodosList extends Component {
             .catch(function (error){
                 console.log(error);
             })
-
     }
 
     onSubmit(id) {
@@ -80,13 +81,13 @@ export default class TodosList extends Component {
                 <Table striped bordered hover size="sm">
                     <thead>
                         <tr>
-                            <th width={'3%'}>#</th>
-                            <th width={'45%'}>문제</th>
+                            <th>#</th>
+                            <th>문제</th>
                             <th>정답</th>
-                            <th>단계</th>
-                            <th width={'7%'}>Date</th>
-                            <th width={'3%'}>Action</th>
-                            <th width={'3%'}>delete</th>
+                            {/* <th>단계</th> */}
+                            <th>Date</th>
+                            <th>Action</th>
+                            <th>delete</th>
                         </tr>
                     </thead>
                     <tbody >

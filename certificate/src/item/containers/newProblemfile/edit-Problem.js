@@ -22,20 +22,20 @@ export default class EditTodo extends Component {
         }
     }
 
-    componentDidMount() {
-        axios.get('/Problem/edit/'+this.props.match.params.id)
-            .then(response => {
-                this.setState({
-                    todo_description: response.data.todo_description,
-                    todo_responsible: response.data.todo_responsible,
-                    todo_priority: response.data.todo_priority,
-                    todo_createdAt: response.data.todo_createdAt
-                })   
-            })
-            .catch(function (error) {
-                console.log(error);
-            })
-    }
+    // componentDidMount() {
+    //     axios.get('/Problem/edit/'+this.props.match.params.id)
+    //         .then(response => {
+    //             this.setState({
+    //                 todo_description: response.data.todo_description,
+    //                 todo_responsible: response.data.todo_responsible,
+    //                 todo_priority: response.data.todo_priority,
+    //                 todo_createdAt: response.data.todo_createdAt
+    //             })   
+    //         })
+    //         .catch(function (error) {
+    //             console.log(error);
+    //         })
+    // }
 
     onChangeTodoDescription(e) {
         this.setState({
@@ -78,7 +78,8 @@ export default class EditTodo extends Component {
     render() {
         return (
             <div style={{margin: 25}}>
-                <h3 align="center">Update Problem</h3>
+                {/* <h3 align="center">Update Problem</h3> */}
+                <h3>Update Problem</h3>
                 <form onSubmit={this.onSubmit}>
                     <div className="form-group"> 
                         <label>문제: </label>
