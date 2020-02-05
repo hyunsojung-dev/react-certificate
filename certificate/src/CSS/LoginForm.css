@@ -21,6 +21,9 @@
   }
 
 .register-item {
-    margin-bottom: 10;
-    margin-left: 50;
+    margin-bottom: 50;
+}
+
+.register-margin {
+  margin: 20;
 }

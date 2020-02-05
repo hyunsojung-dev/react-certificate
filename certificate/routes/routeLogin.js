@@ -63,8 +63,8 @@ LoginRoute.route('/naverInCallback').get(function(req, res) {
   
   LoginRoute.post('/user', function(req, res){
        
-      var paramId = req.body.user_email;
-      var paramPassword = req.body.user_password;
+      var paramId = req.body.login_email;
+      var paramPassword = req.body.login_password;
        
       if(db) {
           authUser(db, paramId, paramPassword, function(err, docs) {             
@@ -134,7 +134,12 @@ LoginRoute.route('/naverInCallback').get(function(req, res) {
           if(docs.length>0){
               console.log('이메일 [%s]', id);
               callback(null,docs);
-          }else{
+          }
+          else if(docs.length===0){
+              console.log('아이디를 입력해주세요.');
+              callback(null,null);
+          }
+          else{
               console.log('아이디 사용 가능');
               callback(null,null);
           }

@@ -10,7 +10,9 @@ import LogoutButton from './item/components/LogoutButton';
 import Problem from './item/containers/Problem';
 import Homeview from './item/containers/Home';
 import YearComment from './item/containers/yearData/evaluation'
-
+// list_item 설정
+import { secondaryListItems } from './item/List_Item';
+// @material-ui 설정
 import clsx from 'clsx';
 import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -29,8 +31,7 @@ import Container from '@material-ui/core/Container';
 import Link2 from '@material-ui/core/Link';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import NotificationsIcon from '@material-ui/icons/Notifications';
-import { secondaryListItems } from './item/listItem';
+// import NotificationsIcon from '@material-ui/icons/Notifications';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
@@ -178,11 +179,18 @@ export default function Dashboard() {
           <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
             React Certificate
           </Typography>
-          <IconButton color="inherit">
+          <div style={{ float: "right", marginRight: 5}}>{authenticated ? (
+                <LogoutButton logout={logout} />              
+                ) : (
+                <Link to="/login">
+                    <div style={{fontSize: 15}}>Login</div>
+                </Link>
+                )}</div>
+          {/* <IconButton color="inherit">
             <Badge badgeContent={4} color="secondary">
               <NotificationsIcon />
             </Badge>
-          </IconButton>
+          </IconButton> */}
         </Toolbar>
       </AppBar>
       <Drawer
@@ -231,11 +239,25 @@ export default function Dashboard() {
       <main className={classes.content}>
         <div className={classes.appBarSpacer} />
         <Container maxWidth="lg" className={classes.container}>
-         <div>
+         <Switch>
             <Route exact path="/" component={Homeview}/>
-            <Route path="/Problem" component={Problem}/>
-            <Route path="/comment" component={YearComment}/>
-         </div>
+            <Route
+              path="/login"
+              render={props => (
+              <LoginForm authenticated={authenticated} login={login} {...props} />
+              )} />
+            <AuthRoute
+              authenticated={authenticated}
+              path="/Problem"
+              render={props => <Problem user={user} {...props} /> }  />           
+            <AuthRoute
+              authenticated={authenticated}
+              path="/comment"
+              render={props => <YearComment user={user} {...props} />} />               
+
+            {/* <Route path="/Problem" component={Problem}/>
+            <Route path="/comment" component={YearComment}/> */}
+         </Switch>
            
           <Box pt={6}>
             <Copyright />

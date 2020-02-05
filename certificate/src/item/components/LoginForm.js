@@ -2,20 +2,27 @@ import React, { useState } from 'react';
 import { Redirect, BrowserRouter as Router } from 'react-router-dom';
 // import { Redirect } from 'react-router-dom';
 import axios from 'axios';
-import { makeStyles } from '@material-ui/core/styles';
-import TextField from '@material-ui/core/TextField';
-import Button from '@material-ui/core/Button';
 import Modal from 'react-awesome-modal';
 import '../../CSS/LoginForm.css';
 // import { Left } from 'react-bootstrap/lib/Media';
 import Image from '../../img/iconlogin.png';
+// material-ui 사용 : styles, textField, button, alert
+import { makeStyles } from '@material-ui/core/styles';
+import { Alert, AlertTitle } from '@material-ui/lab';
+import TextField from '@material-ui/core/TextField';
+import Button from '@material-ui/core/Button';
+import Snackbar from '@material-ui/core/Snackbar';
+import MuiAlert from '@material-ui/lab/Alert';
 
 const useStyles = makeStyles(theme => ({
   root: {
     '& > *': {
       margin: theme.spacing(1),
-      width: 350,
+      //width: 330,
     },
+  },
+  item:{
+    marginTop: 5,
   },
   container: {
     display: 'flex',
@@ -30,13 +37,21 @@ const useStyles = makeStyles(theme => ({
 }));
 
 function LoginForm({ authenticated, login, location }) {
+  // style
   const classes = useStyles();
+
+  // 회원가입을 위한 DB setting
   const [user_email, setEmail] = useState('');
   const [user_name, setName] = useState('');
   const [user_password, setPW] = useState('');
   const [user_birthday, setBIRTH] = useState('');
   const [visible, setVB] = useState('');
   const [error, setERROR] = useState('');
+  // 로그인 form DB setting
+  const [login_email, setlogin_Email] = useState('');
+  const [login_password, setlogin_PW] = useState('');
+  //alert snckbar 
+  const [open, setOpen] = React.useState(false);
 
   const openModal = () => {
       setVB(true);
@@ -47,8 +62,9 @@ function LoginForm({ authenticated, login, location }) {
       setVB(false);
       // this.setState({  visible : false  });
     }
-  
-  const getBreeds = (newUser) => {
+
+  // server&DB 에서 유효성 검사 후 유효 혹은 에러 발생
+  const getUsers = (newUser) => {
     try {
       return axios.post('/login/user', newUser);
     } catch (error) {
@@ -62,44 +78,44 @@ function LoginForm({ authenticated, login, location }) {
       console.error(error)
     }
   };
-  
+
+  function Alert(props) {
+    return <MuiAlert elevation={6} variant="filled" {...props} />;
+  }
+
   const onSubmit = () => {
     try {
-      
-      console.log(`Form submitted:`);
-      console.log(`commnet text: ${user_email}`);
-      console.log(`commnet user: ${user_name}`);
-      console.log(`commnet user: ${user_password}`);
+      console.log(`로그인 입력 정보`);
+      console.log(`commnet text: ${login_email}`);
+      console.log(`commnet user: ${login_password}`);
 
-      const newUser = {
-        user_email: user_email,
-        //user_name: user_name,
-        user_password: user_password
+      const newLogin = {
+        login_email: login_email,
+        login_password: login_password
       };
-      // axios.post('/login/user', newUser)
-      //     .then(res => console.log('이게 어디서 뜨냐'));
-      const breeds = getBreeds(newUser).then(res => {
-        if (res.data===user_email){
+      const usrs = getUsers(newLogin).then(res => {
+        if (res.data===login_email){
           console.log(res.data);
-          login({ user_email, user_password });
+          login({ login_email, login_password });
         }
         else if (res.data==='false'){
-          alert('로그인 실패, 다시 시도해주세요.');
-          console.log('react login form에서 로그인 실패임.');
-          setEmail('');
-          setPW('');
+          //alert('로그인 실패, 다시 시도해주세요.');
+          setOpen(true);
+          console.log('=> err_location : react login form에서 로그인 실패.');
+          setlogin_Email('');
+          setlogin_PW('');
         }
       })
-
+      
     } catch (e) {
       alert('Failed to login');
-      setEmail('');
-      setPW('');
+      setlogin_Email('');
+      setlogin_PW('');
     }
   }
   const SignOnclick = () => {
     try {
-      console.log(`Form submitted:`);
+      console.log(`회원가입 정보`);
       console.log(`user_email: ${user_email}`);
       console.log(`user_name: ${user_name}`);
       console.log(`user_name: ${user_birthday}`);
@@ -121,7 +137,6 @@ function LoginForm({ authenticated, login, location }) {
                 setERROR('err');
               }
               else if(error!=='err') {
-  
               }
           })
         //alert('회원가입 성공!');
@@ -152,44 +167,68 @@ function LoginForm({ authenticated, login, location }) {
       if (res.data==='false'){
         alert('중복 아이디 존재');
       }
+      else if(res.data===""){
+        alert('아이디를 입력해주세요.');
+      }
       else if (res.data==='true'){
         alert('아이디 사용가능');
       }
     }) 
 
   }
+  const handleClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setOpen(false);
+  };
 
   const { from } = location.state || { from: { pathname: "/" } };
   if (authenticated) return <Redirect to={from} />;
 
   return (
     <><Router>
-    <div style={{margin: 25}}>      
-    <div><img src={Image} width="20" height="20"></img>LOGIN</div>
+    <div //style={{margin: 25}}
+    >      
+    <div>LOGIN</div>
       <form className={classes.root} noValidate autoComplete="off">
-        <div>
-          <TextField id="outlined-required" label="email" variant="outlined" // defaultValue="email"
-            value={user_email}
-            onChange={({ target: { value } }) => setEmail(value)}  />
+      {/* <form noValidate autoComplete="off"> */}
+        <div className={classes.item}>
+        <TextField
+          required
+          id="filled-required"
+          label="Email"
+          defaultValue="Hello World"
+          variant="filled"
+          value={login_email} onChange={({ target: { value } }) => setlogin_Email(value)}
+        />
         </div>
-        <div>
-        <TextField  id="outlined-password-input" label="password" variant="outlined" //autoComplete="current-password"
-          //defaultValue="password" 
-          value={user_password}
-          onChange={({ target: { value } }) => setPW(value)}
-          type="password"  />
+        <div className={classes.item}>
+        <TextField
+          id="filled-password-input"
+          label="Password"
+          type="password"
+          autoComplete="current-password"
+          variant="filled"
+          value={login_password} onChange={({ target: { value } }) => setlogin_PW(value)}
+        />
         </div>
-        <div style={{marginLeft: 10, float: "left"}}>
+        <div >
         <Button variant="outlined" onClick={onSubmit} >submit</Button>
+        <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+        <Alert onClose={handleClose} severity="error" >가입되지 않은 아이디이거나, 잘못된 패스워드 입니다.</Alert>
+        </Snackbar>
         {/* </div> */}
-        <section style={{ float: "left"}}>
-                <Button variant="outlined" onClick={openModal} > 회원가입 </Button>
+        <section>
+              <Button variant="outlined" onClick={openModal} > 회원가입 </Button>              
                 {/* <Modal visible={visible} width="400" height="400" effect="fadeInUp"   onClickAway={closeModal}> */}
                 <Modal visible={visible} effect="fadeInUp"   onClickAway={closeModal}>
                     <div>
                       <div>
                         <div className="register-header">회원가입</div>   
-                        <div style={{  marginLeft: 20}}>
+                        {/* <div style={{ marginLeft: 20}}> */}
+                        <div className="register-item">
                         <form className={classes.root} noValidate autoComplete="off">
                           <div style={{ float: "left"}} >                            
                             <TextField id="standard-basic" label="email"  
