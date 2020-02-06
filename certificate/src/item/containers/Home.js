@@ -40,7 +40,7 @@ const btnStyle = {
   fontSize: "1rem",
   lineHeight: 1.5,
   textAlign:"center",
-  marginTop: 15
+  marginTop: 25
 };
 
 class Home extends Component {

@@ -28,12 +28,14 @@ class Problem extends Component {
           <NavDropdown title="YEAR" id="basic-nav-dropdown" to="/comment/2018">
             <NavDropdown.Item className="nav-link" ><Link to="/comment/2018" className="nav-link">2018</Link></NavDropdown.Item>
             <NavDropdown.Item className="nav-link" ><Link to="/comment/2019" className="nav-link">2019</Link></NavDropdown.Item>
+            <NavDropdown.Item className="nav-link" ><Link to="/comment/2020" className="nav-link">2020</Link></NavDropdown.Item>
           </NavDropdown>
           
         </nav>
         <br/>
         <Switch>        
-                    <Route path="/comment/2018" component={yearDateListview_2018} /></Switch>
+            <Route path="/comment/2018" component={yearDateListview_2018} />
+        </Switch>
       </div>
     </Router>
  

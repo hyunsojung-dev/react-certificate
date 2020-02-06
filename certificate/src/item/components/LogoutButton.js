@@ -6,7 +6,7 @@ function LogoutButton({ logout, history }) {
     logout();
     history.push('/');
   }
-  return <div style={{ float: "right", marginRight: 15, fontSize: 20}}><Link onClick={handleClick} >Logout</Link></div>;
+  return <div style={{ float: "right", marginRight: 5, fontSize: 15}}><Link onClick={handleClick} >Logout</Link></div>;
 }
 
 export default withRouter(LogoutButton);

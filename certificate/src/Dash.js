@@ -42,15 +42,14 @@ import ImportContactsRoundedIcon from '@material-ui/icons/ImportContactsRounded'
 // 대쉬보드 메인 색 변경
 // import green from '@material-ui/core/colors/green';
 // const green_primary = green[800];
-import brown from '@material-ui/core/colors/brown';
-const brown_primary = brown[500];
-
+import blueGrey from '@material-ui/core/colors/blueGrey';
+const bluegrey_primary = blueGrey[900];
 
 function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
       {'Copyright © '}
-      <Link2 color="inherit" href="https://material-ui.com/">
+      <Link2 color="inherit" href="https://localhost:7376/">
         정보처리기사
       </Link2>{' '}
       {new Date().getFullYear()}
@@ -58,155 +57,62 @@ function Copyright() {
     </Typography>
   );
 }
-
-const drawerWidth = 240;
+//const drawerWidth = 240;
 
 const useStyles = makeStyles(theme => ({
   root: {
-    display: 'flex',
-  },
-  toolbar: {
-    paddingRight: 24, // keep right padding when drawer closed
-  },
-  toolbarIcon: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'flex-end',
-    padding: '0 8px',
-    ...theme.mixins.toolbar,
-  },
-  appBar: {
-    background: brown_primary,
-    zIndex: theme.zIndex.drawer + 1,
-    transition: theme.transitions.create(['width', 'margin'], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
-  },
-  appBarShift: {
-    marginLeft: drawerWidth,
-    width: `calc(100% - ${drawerWidth}px)`,
-    transition: theme.transitions.create(['width', 'margin'], {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
+    flexGrow: 1,
   },
   menuButton: {
-    marginRight: 36,
-  },
-  menuButtonHidden: {
-    display: 'none',
+    marginRight: theme.spacing(2),
   },
   title: {
     flexGrow: 1,
-    //color: green_primary,
   },
-  drawerPaper: {
-    position: 'relative',
-    whiteSpace: 'nowrap',
-    width: drawerWidth,
-    transition: theme.transitions.create('width', {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.enteringScreen,
-    }),
+  list: {
+    width: 250,
   },
-  drawerPaperClose: {
-    overflowX: 'hidden',
-    transition: theme.transitions.create('width', {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
-    width: theme.spacing(6),
-    [theme.breakpoints.up('sm')]: {
-      width: theme.spacing(8),
-    },
+  fullList: {
+    width: 'auto',
   },
-  appBarSpacer: theme.mixins.toolbar,
-  content: {
-    flexGrow: 1,
-    height: '100vh',
-    overflow: 'auto',
+  AppBar: {
+    background: bluegrey_primary,
   },
-  container: {
-    paddingTop: theme.spacing(2),
-    paddingBottom: theme.spacing(4),
-  },
-  paper: {
-    padding: theme.spacing(2),
-    display: 'flex',
-    overflow: 'auto',
-    flexDirection: 'column',
-  },
-  fixedHeight: {
-    height: 240,
+  Box: {
+    marginBottom: 10,
   },
 }));
 
 export default function Dashboard() {
   const classes = useStyles();
   const [open, setOpen] = React.useState(true);
-
+  // user 
   const [user, setUser] = useState(null);
   const authenticated = user != null;
-  
   const login = ({ email, name }) => setUser(signIn({ email, name }));
   const logout = () => setUser(null);
+  // drawer 기능
+  const [state, setState] = React.useState({
+    top: false,
+    left: false,
+    bottom: false,
+    right: false,
+  });
 
-  const handleDrawerOpen = () => {
-    setOpen(true);
+  const toggleDrawer = (side, open) => event => {
+    if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
+      return;
+    }
+    setState({ ...state, [side]: open });
   };
-  const handleDrawerClose = () => {
-    setOpen(false);
-  };
-  const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
-
-
-  return (
-    <Router>
-    <div className={classes.root}>
-      <CssBaseline />
-      <AppBar position="absolute" className={clsx(classes.appBar, open && classes.appBarShift)}>
-        <Toolbar className={classes.toolbar}>
-          <IconButton
-            edge="start"
-            color="inherit"
-            aria-label="open drawer"
-            onClick={handleDrawerOpen}
-            className={clsx(classes.menuButton, open && classes.menuButtonHidden)}
-          >
-            <MenuIcon />
-          </IconButton>
-          <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
-            React Certificate
-          </Typography>
-          <div style={{ float: "right", marginRight: 5}}>{authenticated ? (
-                <LogoutButton logout={logout} />              
-                ) : (
-                <Link to="/login">
-                    <div style={{fontSize: 15}}>Login</div>
-                </Link>
-                )}</div>
-          {/* <IconButton color="inherit">
-            <Badge badgeContent={4} color="secondary">
-              <NotificationsIcon />
-            </Badge>
-          </IconButton> */}
-        </Toolbar>
-      </AppBar>
-      <Drawer
-        variant="permanent"
-        classes={{
-          paper: clsx(classes.drawerPaper, !open && classes.drawerPaperClose),
-        }}
-        open={open}
-      >
-        <div className={classes.toolbarIcon}>
-          <IconButton onClick={handleDrawerClose}>
-            <ChevronLeftIcon />
-          </IconButton>
-        </div>
-        <Divider />
-        {/* <List>{mainListItems}</List> */}
+  const sideList = side => (
+    <div
+      className={classes.list}
+      role="presentation"
+      onClick={toggleDrawer(side, false)}
+      onKeyDown={toggleDrawer(side, false)}
+    >
+      <Divider />
           <div>
               <Link to="/" >
               <ListItem button>
@@ -234,11 +140,43 @@ export default function Dashboard() {
               </Link> 
           </div>
         <Divider />
+    </div>
+  );
+ 
+  return (
+    <Router>
+    <div className={classes.root}>
+      <AppBar position="static" className={classes.AppBar}>
+        <Toolbar >
+        <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu" onClick={toggleDrawer('left', true)} >
+            <MenuIcon />
+          </IconButton>
+          <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
+            React Certificate
+          </Typography>
+          <div style={{ float: "right", marginRight: 5}}>{authenticated ? (
+                <LogoutButton logout={logout} />              
+                ) : (
+                <Link to="/login">
+                    <div style={{fontSize: 16}}>Login</div>
+                </Link>
+                )}</div>
+          {/* <IconButton color="inherit">
+            <Badge badgeContent={4} color="secondary">
+              <NotificationsIcon />
+            </Badge>
+          </IconButton> */}
+        </Toolbar>
+      </AppBar>
+      <Drawer
+        open={state.left} onClose={toggleDrawer('left', false)}
+      >
+        {sideList('left')}
         <List>{secondaryListItems}</List>
       </Drawer>
-      <main className={classes.content}>
-        <div className={classes.appBarSpacer} />
-        <Container maxWidth="lg" className={classes.container}>
+      <main >
+        <div />
+        {/* <Container maxWidth="lg" className={classes.container}> */}
          <Switch>
             <Route exact path="/" component={Homeview}/>
             <Route
@@ -254,15 +192,11 @@ export default function Dashboard() {
               authenticated={authenticated}
               path="/comment"
               render={props => <YearComment user={user} {...props} />} />               
-
-            {/* <Route path="/Problem" component={Problem}/>
-            <Route path="/comment" component={YearComment}/> */}
          </Switch>
-           
           <Box pt={6}>
             <Copyright />
           </Box>
-        </Container> 
+        {/* </Container>  */}
       </main>
     </div>
     </Router>

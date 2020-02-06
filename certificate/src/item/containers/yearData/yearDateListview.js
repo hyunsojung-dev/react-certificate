@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Route, Link } from 'react-router-dom';
+import { render } from 'react-dom';
 import axios from 'axios';
 //import Dialog from 'react-bootstrap-dialog'
 // import Moment from 'react-moment';
@@ -12,29 +12,33 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-
-const btnStyle = {
-    color: "white",
-    background: "white",
-    //padding: ".375rem .75rem",
-    border: "1px solid white",
-    borderRadius: ".25rem",
-   // fontSize: "1rem",
-    lineHeight: 1.5
-  };
+import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
+import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
+import NavigationIcon from '@material-ui/icons/Navigation';
 
 
-
-  const Problem = props => ( 
-        <TableRow>  
-          <TableCell component="th" scope="row">          {props.problem.problem_index}          </TableCell>
+const Problem = props => ( 
+      <TableRow >  
+        <TableCell component="th" scope="row">{props.problem.problem_index}</TableCell>
         <TableCell align="left">{props.problem.problem_info}</TableCell>
         <TableCell align="left">{props.problem.problem_answer}</TableCell>
         <TableCell align="left">{props.problem.problem_year}</TableCell>
-        </TableRow>
+      </TableRow>
 )
 
-    
+const btnStyle = {
+  color: "white",
+  background: "black",
+  padding: ".375rem .75rem",
+  border: "1px solid white",
+  borderRadius: ".25rem",
+  fontSize: "10",
+  lineHeight: 1.5,
+  textAlign:"center",
+  marginTop: 15,
+  marginRight: 5,
+};
+
 const useStyles = makeStyles(theme => ({
     root: {
       padding: 10,
@@ -55,14 +59,66 @@ const useStyles = makeStyles(theme => ({
     },
   }));
 
-export default class problemList extends Component {
-    
-    constructor(props) {
-        super(props);
-        this.state = {problems: []};
-        //this.onDeletebutton = this.onDeletebutton.bind(this);
+  class ScrollButton extends React.Component {
+    constructor() {
+      super();
+  
+      this.state = {
+          intervalId: 0
+      };
     }
     
+    scrollStep() {
+      if (window.pageYOffset === 0) {
+          clearInterval(this.state.intervalId);
+      }
+      window.scroll(0, window.pageYOffset - this.props.scrollStepInPx);
+    }
+    
+    scrollToTop() {
+      let intervalId = setInterval(this.scrollStep.bind(this), this.props.delayInMs);
+      this.setState({ intervalId: intervalId });
+    }
+    
+    render () {
+        return <button style={btnStyle} title='Back to top' className='scroll' 
+                 onClick={ () => { this.scrollToTop(); }}>
+                  <span className='arrow-up glyphicon glyphicon-chevron-up'></span>
+                  <NavigationIcon/>
+                </button>;
+     }
+  } 
+
+export default class problemList extends Component {
+
+
+    constructor(props) {
+        super(props);
+        this.state = {problems: [], page:1, start:0, end:10};
+        this.handleChangeIndexUP = this.handleChangeIndexUP.bind(this);
+        this.handleChangeIndexDown = this.handleChangeIndexDown.bind(this);
+        //this.onDeletebutton = this.onDeletebutton.bind(this);
+    }
+
+    handleChangeIndexUP = () => {
+      const {page, start, end} = this.state;
+      if(end > this.state.problems.length) return;
+      this.setState({
+        page: page+1,
+        start: start +10,
+        end: end+10
+      });
+    };
+
+    handleChangeIndexDown = () => {
+      const {page, start, end} = this.state;
+      if(start===0) return;
+      this.setState({
+        page: page -1,
+        start: start -10,
+        end: end-10
+      })
+    };
 
     componentDidMount() {
         axios.get('http://localhost:7376/comment/2018')
@@ -74,19 +130,16 @@ export default class problemList extends Component {
             })
     }
 
-
-    todoList() {
+    yearProblemList() {
         var data = this.state.problems;
-        return data.map(function(currentTodo, i){
-            return <Problem problem={currentTodo} key={i}/> ;
+        return data.slice(this.state.start, this.state.end).map(function(currentTodo, i){
+            return <Problem problem={currentTodo} key={i} /> ;
         })
-
     }
 
     render() {
         return (
-          // <div style={{margin: 5}}> 
-          <div > 
+          <div >         
             <div className={useStyles.root}>
               <Paper className={useStyles.paper}>
                 <Table className={useStyles.table} size="small" aria-label="a dense table">
@@ -99,11 +152,18 @@ export default class problemList extends Component {
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                          { this.todoList() }  
+                          { this.yearProblemList() }  
                   </TableBody>
                 </Table>
               </Paper>
             </div>
+            <div style={{ float: "right", marginRight: 5}}>
+              <button style={btnStyle} onClick={this.handleChangeIndexDown.bind(this)}> <ArrowBackIosIcon/></button>
+              <dic >{this.state.page}</dic>
+              <button style={btnStyle} onClick={this.handleChangeIndexUP.bind(this)}> <ArrowForwardIosIcon/> </button>
+            </div>
+            <ScrollButton scrollStepInPx="50" delayInMs="16.66">  </ScrollButton>
+             {/* <div> {this.state.start} </div> <div> {this.state.end} </div> */}
         </div>
            
         )
