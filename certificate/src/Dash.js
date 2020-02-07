@@ -3,13 +3,13 @@ import React, { useState, useEffect } from 'react';
 // 리액트 v3 정적라우팅 , v4 동적 라우팅
 import { Link, Route, Switch, BrowserRouter as Router } from 'react-router-dom';
 
-import { signIn } from './item/components/auth';
-import AuthRoute from './item/components/AuthRoute';
-import LoginForm from './item/components/LoginForm';
-import LogoutButton from './item/components/LogoutButton';
+import { signIn } from './item/login_component/auth';
+import AuthRoute from './item/login_component/AuthRoute';
+import LoginForm from './item/login_component/LoginForm';
+import LogoutButton from './item/login_component/LogoutButton';
 import Problem from './item/containers/Problem';
 import Homeview from './item/containers/Home';
-import YearComment from './item/containers/yearData/evaluation'
+import YearComment from './item/containers/evaluation'
 // list_item 설정
 import { secondaryListItems } from './item/List_Item';
 // @material-ui 설정

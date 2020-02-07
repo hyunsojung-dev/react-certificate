@@ -11,7 +11,7 @@ import Problem from './item/containers/Problem';
 //import comment from './containers/comment';
 // import evaluation from './containers/evaluation-view';
 // import evaluation from './containers/yearData/yearDateListview';
-import evaluation from './item/containers/yearData/evaluation';
+import evaluation from './item/containers/evaluation';
 import './CSS/index.css';
 
 

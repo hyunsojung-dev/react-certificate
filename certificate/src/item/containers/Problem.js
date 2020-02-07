@@ -5,9 +5,9 @@ import axios from 'axios';
 import { BrowserRouter as Router, Route, Link } from "react-router-dom"
 import "bootstrap/dist/css/bootstrap.min.css";
 //import { ButtonToolbar, Button, Form, ormControl  } from 'react-bootstrap';
-import CreateTodo from "./newProblemfile/create-Problem";
-import EditTodo from "./newProblemfile/edit-Problem";
-import TodosList from "./newProblemfile/listShow-Problem";
+import CreateTodo from "./Problem_component/create-Problem";
+import EditTodo from "./Problem_component/edit-Problem";
+import TodosList from "./Problem_component/listShow-Problem";
 
 var style = {
   container:{
