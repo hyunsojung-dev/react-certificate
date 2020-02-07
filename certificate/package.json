@@ -53,10 +53,10 @@
       "last 1 chrome version",
       "last 1 firefox version",
       "last 1 safari version"
-    ],
-    "homepage": "http://hyunsojung-dev.github.io/react-certificate"
+    ]
   },
   "devDependencies": {
     "gh-pages": "^2.2.0"
-  }
+  },
+  "homepage": "http://hyunsojung-dev.github.io/react-certificate"
 }
