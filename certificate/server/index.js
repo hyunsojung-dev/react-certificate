@@ -46,6 +46,6 @@ app.use('/home/', HomeRoute); // Login 후 View 화면
 
 // Port setting
 const port = 7376;
-app.listen(7376, function(){
-  console.log("➡️ server on! http://localhost:"+port);
+app.listen(port, function(){
+  console.log("➡️ server on! ");
 });

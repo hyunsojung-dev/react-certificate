@@ -49,7 +49,7 @@ function Copyright() {
   return (
     <Typography variant="body2" color="textSecondary" align="center">
       {'Copyright © '}
-      <Link2 color="inherit" href="https://localhost:7376/">
+      <Link2 color="inherit" href="https://hyunsojung-dev.github.io/react-certificate/">
         정보처리기사
       </Link2>{' '}
       {new Date().getFullYear()}
