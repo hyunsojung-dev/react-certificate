@@ -12,10 +12,13 @@ import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
-import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
-import NavigationIcon from '@material-ui/icons/Navigation';
-
+import ChevronLeftTwoToneIcon from '@material-ui/icons/ChevronLeftTwoTone';
+import ChevronRightTwoToneIcon from '@material-ui/icons/ChevronRightTwoTone';
+import SkipPreviousTwoToneIcon from '@material-ui/icons/SkipPreviousTwoTone';
+import SkipNextTwoToneIcon from '@material-ui/icons/SkipNextTwoTone';
+import NavigationTwoToneIcon from '@material-ui/icons/NavigationTwoTone';
+import blueGrey from '@material-ui/core/colors/blueGrey';
+const bluegrey_primary = blueGrey[900];
 
 const Problem = props => ( 
       <TableRow >  
@@ -27,8 +30,8 @@ const Problem = props => (
 )
 
 const btnStyle = {
-  color: "white",
-  background: "black",
+  color: bluegrey_primary,
+  background: "white",
   padding: ".375rem .75rem",
   border: "1px solid white",
   borderRadius: ".25rem",
@@ -36,7 +39,7 @@ const btnStyle = {
   lineHeight: 1.5,
   textAlign:"center",
   marginTop: 15,
-  marginRight: 5,
+
 };
 
 const useStyles = makeStyles(theme => ({
@@ -84,7 +87,7 @@ const useStyles = makeStyles(theme => ({
         return <button style={btnStyle} title='Back to top' className='scroll' 
                  onClick={ () => { this.scrollToTop(); }}>
                   <span className='arrow-up glyphicon glyphicon-chevron-up'></span>
-                  <NavigationIcon/>
+                  <NavigationTwoToneIcon/>
                 </button>;
      }
   } 
@@ -157,10 +160,10 @@ export default class problemList extends Component {
                 </Table>
               </Paper>
             </div>
-            <div style={{ float: "right", marginRight: 5}}>
-              <button style={btnStyle} onClick={this.handleChangeIndexDown.bind(this)}> <ArrowBackIosIcon/></button>
-              <dic >{this.state.page}</dic>
-              <button style={btnStyle} onClick={this.handleChangeIndexUP.bind(this)}> <ArrowForwardIosIcon/> </button>
+            <div style={{ float: "right"}}>
+              <button style={btnStyle} onClick={this.handleChangeIndexDown.bind(this)}> <ChevronLeftTwoToneIcon/></button>
+              <dic style={btnStyle} >{this.state.page}</dic>
+              <button style={btnStyle} onClick={this.handleChangeIndexUP.bind(this)}> <ChevronRightTwoToneIcon/> </button>
             </div>
             <ScrollButton scrollStepInPx="50" delayInMs="16.66">  </ScrollButton>
              {/* <div> {this.state.start} </div> <div> {this.state.end} </div> */}
