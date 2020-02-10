@@ -1,6 +1,6 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "88f397f2c0f14c7593b91d75ff936041",
+    "revision": "58675b3621d4a64ef5e79e3dc2238f2e",
     "url": "/react-certificate/index.html"
   },
   {
@@ -8,7 +8,7 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/react-certificate/static/css/2.47e06e2e.chunk.css"
   },
   {
-    "revision": "88feb6ee2fadce3968be",
+    "revision": "39989e5e98ce827113e6",
     "url": "/react-certificate/static/css/main.264c0a4c.chunk.css"
   },
   {
@@ -20,8 +20,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/react-certificate/static/js/2.908f1ca1.chunk.js.LICENSE"
   },
   {
-    "revision": "88feb6ee2fadce3968be",
-    "url": "/react-certificate/static/js/main.18ab5812.chunk.js"
+    "revision": "39989e5e98ce827113e6",
+    "url": "/react-certificate/static/js/main.2215bf67.chunk.js"
   },
   {
     "revision": "c8faaae1f92b94437e54",
