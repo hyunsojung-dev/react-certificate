@@ -23,11 +23,9 @@ app.use(bodyParser.urlencoded({extended:true}));
 
 
 // 소스코드 수정 후 npm run-script build > node ./index.js 시작
-// console.log(path.resolve(__dirname,'../build'));
-// app.use('/', express.static(path.resolve(__dirname,'../build')));
-app.get('/*', function (req, res) {
-  res.sendFile(path.join(__dirname, 'build', 'index.html'));
-})
+console.log(path.resolve(__dirname,'../build'));
+app.use('/', express.static(path.resolve(__dirname,'../build')));
+
 //Router
 //라우터 설정 에러 문제 problem url 이후의 router 설정이기 때문에 /Problem/ 으로 나타내야함.
 const HomeRoute = express.Router();
