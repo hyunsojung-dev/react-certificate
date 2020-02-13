@@ -5,7 +5,7 @@ import ReactDOM from 'react-dom';
 // 클라이언트 사이드 렌더링을 하는 SPA 특징을 가지는 리액트
 import { Link, Route, BrowserRouter as Router } from 'react-router-dom'
 
-import AppView from './Dash';
+import Dash from './Dash';
 
 import Problem from './item/containers/Problem';
 //import comment from './containers/comment';
@@ -21,10 +21,9 @@ ReactDOM.render(
   //      </Route>
   // </Router>,
   <Router>
-       <Route exact path="/" component={AppView} />  
+      <Route exact path="/" component={Dash} />  
       <Route path="/Problem" component={Problem} />
       <Route path="/login" component={evaluation}/>
-
   </Router>,
   document.getElementById('root')
 );

@@ -1,106 +1,53 @@
-// import express from 'express';
-// import app from 'express';
-// import path from 'path';
-// import mongoose from 'mongoose';
-// import bodyParser from 'body-parser';
 const express = require('express');
 const app = express();
 const path = require('path');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
-const os = require("os");
+const config = require('../config');
 
-
-var Todo     = require("../models/Todo");
-
-// DB setting
-mongoose.set('useNewUrlParser', true);    // 1
-mongoose.set('useFindAndModify', false);  // 1
-mongoose.set('useCreateIndex', true);     // 1
-mongoose.connect(process.env.MongoDB); // 2
-const db = mongoose.connection; // 3
-// 4
-db.once("open", function(){
-  console.log("DB connected");
+mongoose.connect(config.db.uri, {
+  useNewUrlParser: true,
+  useFindAndModify: false
 });
-// 5
-db.on("error", function(err){
-  console.log("DB ERROR : ", err);
-});
-// Other settings
-//app.set("view engine", "ejs");
-app.use('/', express.static(path.resolve(__dirname,'../build')));
 
-app.use(bodyParser.json()); // 2
-app.use(bodyParser.urlencoded({extended:true})); // 3
+const db = mongoose.connection;
+
+const handleOpen = () => console.log("➡️ connected to DB");
+const handleError = (err) => console.log(`Error on DB Connection : ${err}`);
+
+db.once("open", handleOpen);
+db.on("error", handleError);
+
+app.use(bodyParser.json()); 
+app.use(bodyParser.urlencoded({extended:true})); 
+
+const startview = express.Router();
 
 // 소스코드 수정 후 npm run-script build > node ./index.js 시작
-// console.log(path.resolve(__dirname,'../build'));
-// app.use('/', express.static(path.resolve(__dirname,'../build')));
-// app.use('/Problem/', require("../routes/posts"));
-app.use("/comment/", require("../routes/posts-router"));
-const todoRoutes = express.Router();
-app.use('/Problem/', todoRoutes);
+console.log(path.resolve(__dirname,'../build'));
+
+app.use('/', express.static(path.resolve(__dirname,'../build')));
+
 //Router
 //라우터 설정 에러 문제 problem url 이후의 router 설정이기 때문에 /Problem/ 으로 나타내야함.
-// const Routes = express.Router();
-// app.use('/Problem/', todoRoutes);
+const HomeRoute = express.Router();
 
+app.use(function(req, res, next) {
+  res.header("Access-Control-Allow-Origin","*");
+  res.header("Access-Control-Allow-Headers","Origin, X-Requested-With, Content-Type, Accept");
+  next();
+});
 
-// app.post('/Problem', (req, res) => {
-//   var newMessage = new Message(req.body);
-//   newMessage.save((err, doc) => {
-//     if (err) {
-//       res.send(err);
-//     } else {
-//       res.send(doc);
-//     }
-//   });
-// });
-// const Schema = mongoose.Schema;
+app.use('/view/', require("../routes/routeHomeview")); // home 문제 랜덤 리스트 뿌려주는 라우터
+app.use("/Problem/", require("../routes/routeProblem")); // 사용자들의 문제 요청 리스트 라우터
+app.use('/comment/', require("../routes/routeYear")); // 3번째 뷰의 년도별 문제 리스트 라우터
+app.use('/login/', require("../routes/routeLogin")); // Login 후 View 화면
+app.use('/home/', HomeRoute); // Login 후 View 화면
 
-// const Problemchema = new Schema({
-//   name:{type:String}
-// });
-// var Contact = mongoose.model("contacts", Problemchema); //5
-
-
-// DB schema // 4
-// var Problemchema = mongoose.Schema({
-//   name:{type:String, required:true, unique:true}
-// });
-
-
-// Routes
-// Home // 6
-// app.get('/Problem/', function(req, res){
-//   res.redirect('/Problem');
-// });
-// app.get('/Problem/', function(req, res){
-//   res.redirect('http://localhost:7376/Problem/');
-// });
-// app.use('/Problem/', (req, res, next)=> {
-//   res.redirect('http://localhost:7376/Problem/');
-// })
-
-
-
-
-// // Problem - Index // 7
-// app.get("/Problem", function(req, res, next){
-//   Contact.find({}, function(err, contacts){
-//     if(err) return res.json(err);
-//     res.render("/Problem", {contacts:contacts});
-//   });
-// });
-
-// app.get("/Problem/user", function(req, res, next){
-//   res.send({username:os.userInfo().username});
-// });
-
+//app.use('api/account/', require("../routes/account")); 
 
 // Port setting
 const port = 7376;
-app.listen(7376, function(){
-  console.log("server on! http://localhost:"+port);
+app.listen(port, function(){
+  console.log("➡️ server on! ");
 });
